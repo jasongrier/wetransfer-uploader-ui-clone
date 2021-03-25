@@ -2106,6 +2106,7 @@
     COLORS["BLACK"] = "#000";
     COLORS["WHITE"] = "#fff";
     COLORS["WTR_BLUE"] = "#409fff";
+    COLORS["WTR_TRACK_GRAY"] = "#eee";
   })(COLORS || (COLORS = {}));
 
   var COLORS$1 = COLORS;
@@ -5447,8 +5448,13 @@
   an.createDraft.bind(an);
   an.finishDraft.bind(an);
 
-  var FAKE_TOTAL_SIZE = 1890000;
-  var FAKE_TOTAL_TIME = 33;
+  var FAKE_TOTAL_SIZE = 360000000;
+  var FAKE_TOTAL_TIME = 30;
+  var WIDTH = 156;
+  var STROKE_WIDTH = 12;
+  var RADIUS = WIDTH / 2 - STROKE_WIDTH / 2;
+  var CENTER = WIDTH / 2;
+  var CIRCUMFERENCE = Math.PI * RADIUS * 2;
   var CANCEL_UPLOAD = "CANCEL_UPLOAD";
   var START_UPLOAD = "START_UPLOAD";
   var UPDATE_FILE_COUNT = "UPDATE_FILE_COUNT";
@@ -5936,19 +5942,19 @@
   function FileUploader$2(_a) {
     var children = _a.children;
     var Box = Ye.div(
-      templateObject_1$6 ||
-        (templateObject_1$6 = __makeTemplateObject(
+      templateObject_1$7 ||
+        (templateObject_1$7 = __makeTemplateObject(
           [
-            "\n    background: #fff;\n    border-radius: 10px;\n    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);\n    height: 25.625em;\n    left: 5em;\n    margin: -12.8125em 0 0;\n    position: absolute;\n    top: 50%;\n    transition: transform .5s cubic-bezier(.77,0,.175,1);\n    width: 17.5em;\n    z-index: 30;\n  ",
+            "\n    background: #fff;\n    border-radius: 10px;\n    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);\n    height: 25.625em;\n    left: 5em;\n    margin: -12.8125em 0 0;\n    position: absolute;\n    text-align: center;\n    top: 50%;\n    transition: transform .5s cubic-bezier(.77,0,.175,1);\n    width: 17.5em;\n    z-index: 30;\n  ",
           ],
           [
-            "\n    background: #fff;\n    border-radius: 10px;\n    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);\n    height: 25.625em;\n    left: 5em;\n    margin: -12.8125em 0 0;\n    position: absolute;\n    top: 50%;\n    transition: transform .5s cubic-bezier(.77,0,.175,1);\n    width: 17.5em;\n    z-index: 30;\n  ",
+            "\n    background: #fff;\n    border-radius: 10px;\n    box-shadow: 0 0 12px 0 rgb(0 0 0 / 10%), 0 10px 30px 0 rgb(0 0 0 / 20%);\n    height: 25.625em;\n    left: 5em;\n    margin: -12.8125em 0 0;\n    position: absolute;\n    text-align: center;\n    top: 50%;\n    transition: transform .5s cubic-bezier(.77,0,.175,1);\n    width: 17.5em;\n    z-index: 30;\n  ",
           ]
         ))
     );
     return React__default["default"].createElement(Box, null, children);
   }
-  var templateObject_1$6;
+  var templateObject_1$7;
 
   /**
    * Generic button with a "secondary" state
@@ -5961,8 +5967,8 @@
       onClick = _a.onClick,
       primary = _a.primary;
     var Button = Ye.button(
-      templateObject_3$2 ||
-        (templateObject_3$2 = __makeTemplateObject(
+      templateObject_3$3 ||
+        (templateObject_3$3 = __makeTemplateObject(
           [
             "\n    border-radius: 20px;\n    border: 1px solid ",
             ";\n    cursor: pointer;\n    height: 40px;\n    line-height: 40px;\n    text-align: center;\n    width: 156px;\n\n    &:active,\n    &:focus {\n      outline: none;\n    }\n\n    ",
@@ -5979,8 +5985,8 @@
         var primary = _a.primary;
         return primary
           ? _e(
-              templateObject_1$5 ||
-                (templateObject_1$5 = __makeTemplateObject(
+              templateObject_1$6 ||
+                (templateObject_1$6 = __makeTemplateObject(
                   ["\n        background-color: ", ";\n        color: ", ";\n      "],
                   ["\n        background-color: ", ";\n        color: ", ";\n      "]
                 )),
@@ -5988,8 +5994,8 @@
               COLORS$1.WHITE
             )
           : _e(
-              templateObject_2$5 ||
-                (templateObject_2$5 = __makeTemplateObject(
+              templateObject_2$6 ||
+                (templateObject_2$6 = __makeTemplateObject(
                   ["\n        background-color: ", ";\n        color: ", ";\n      "],
                   ["\n        background-color: ", ";\n        color: ", ";\n      "]
                 )),
@@ -6007,18 +6013,7 @@
       children
     );
   }
-  var templateObject_1$5, templateObject_2$5, templateObject_3$2;
-
-  /**
-   * It spins and grows
-   *
-   * @returns ReactElement
-   */
-
-  function Dial(_a) {
-    _a.magnitude;
-    return React__default["default"].createElement("div", null);
-  }
+  var templateObject_1$6, templateObject_2$6, templateObject_3$3;
 
   /**
    * IRL this would wrap a <input type="file">, or FileReader, or something
@@ -6027,45 +6022,39 @@
    */
 
   function File() {
-    var _a = useSelector(function (state) {
-        return {
-          totalSize: state.totalSize,
-          uploadedSize: state.uploadedSize,
-          uploadInProgress: state.uploadInProgress,
-        };
-      }),
-      totalSize = _a.totalSize,
-      uploadedSize = _a.uploadedSize,
-      uploadInProgress = _a.uploadInProgress;
-
+    var uploadedSize = useSelector(function (state) {
+      return {
+        uploadedSize: state.uploadedSize,
+      };
+    }).uploadedSize;
     var dispatch = useDispatch();
     React.useEffect(
       function startUploading() {
         var timeoutId = window.setTimeout(function () {
-          var updatedUploadedSize = uploadedSize + 100;
+          var updatedUploadedSize = uploadedSize + 1000000;
 
-          if (updatedUploadedSize === totalSize) {
+          if (updatedUploadedSize > FAKE_TOTAL_SIZE) {
             dispatch(cancelUpload());
           } else {
             dispatch(updateUploadedSize(updatedUploadedSize));
           }
-        }, 1000);
+        }, 250);
         return function cleanup() {
           clearTimeout(timeoutId);
         };
       },
-      [uploadInProgress, uploadedSize]
+      [uploadedSize]
     );
     return React__default["default"].createElement(React.Fragment, null);
   }
 
   function formatFileSize(size) {
     if (size > 999999) {
-      return size / 1000000 + "GB";
+      return Math.round(size / 1000000) + "GB";
     } else if (size > 99999) {
-      return size / 100000 + "MB";
+      return Math.round(size / 100000) + "MB";
     } else if (size > 999) {
-      return size / 1000 + "KB";
+      return Math.round(size / 1000) + "KB";
     } else {
       return size + "B";
     }
@@ -6083,17 +6072,27 @@
       totalSize = _a.totalSize,
       uploadedSize = _a.uploadedSize;
     var InfoInner = Ye.div(
-      templateObject_1$4 ||
-        (templateObject_1$4 = __makeTemplateObject(
-          ["\n    text-align: center;\n  "],
-          ["\n    text-align: center;\n  "]
+      templateObject_1$5 ||
+        (templateObject_1$5 = __makeTemplateObject(
+          [
+            "\n    font-size: 16px;\n    font-weight: 100;\n    line-height: 22px;\n    margin-top: 230px;\n    text-align: center;\n  ",
+          ],
+          [
+            "\n    font-size: 16px;\n    font-weight: 100;\n    line-height: 22px;\n    margin-top: 230px;\n    text-align: center;\n  ",
+          ]
         ))
     );
-    var InfoHeader = Ye.h5(templateObject_2$4 || (templateObject_2$4 = __makeTemplateObject(["\n\n  "], ["\n\n  "])));
+    var InfoHeader = Ye.h5(
+      templateObject_2$5 ||
+        (templateObject_2$5 = __makeTemplateObject(
+          ["\n    font-size: 24px;\n    font-weight: 100;\n    margin: 20px 0 5px 0;\n    padding: 0;\n  "],
+          ["\n    font-size: 24px;\n    font-weight: 100;\n    margin: 20px 0 5px 0;\n    padding: 0;\n  "]
+        ))
+    );
     return React__default["default"].createElement(
       InfoInner,
       null,
-      React__default["default"].createElement(InfoHeader, null, "Transferring..."),
+      React__default["default"].createElement(InfoHeader, null, "Transferring\u2026"),
       "Sending ",
       fileCount,
       " files to ",
@@ -6110,7 +6109,7 @@
       React__default["default"].createElement("br", null)
     );
   }
-  var templateObject_1$4, templateObject_2$4;
+  var templateObject_1$5, templateObject_2$5;
 
   /**
    * It shows information about a file upload
@@ -6118,7 +6117,147 @@
    * @returns ReactElement
    */
 
-  function FileUploader$1() {
+  function FileUploader$1(_a) {
+    var buttonOnClick = _a.buttonOnClick,
+      fileCount = _a.fileCount,
+      recipientsCount = _a.recipientsCount,
+      timeRemaining = _a.timeRemaining,
+      totalSize = _a.totalSize,
+      uploadedSize = _a.uploadedSize,
+      uploadInProgress = _a.uploadInProgress;
+    var ButtonWrapper = Ye.div(
+      templateObject_1$4 ||
+        (templateObject_1$4 = __makeTemplateObject(
+          ["\n    position: absolute;\n    bottom: 15px;\n    left: 50%;\n    margin-left: -78px;\n  "],
+          ["\n    position: absolute;\n    bottom: 15px;\n    left: 50%;\n    margin-left: -78px;\n  "]
+        ))
+    );
+    var Dial = Ye.svg(
+      templateObject_2$4 ||
+        (templateObject_2$4 = __makeTemplateObject(
+          [
+            "\n    position: absolute;\n    height: ",
+            "px;\n    width: ",
+            "px;\n    top: 30px;\n    left: 50%;\n    margin-left: -",
+            "px;\n    z-index: 2;\n  ",
+          ],
+          [
+            "\n    position: absolute;\n    height: ",
+            "px;\n    width: ",
+            "px;\n    top: 30px;\n    left: 50%;\n    margin-left: -",
+            "px;\n    z-index: 2;\n  ",
+          ]
+        )),
+      WIDTH,
+      WIDTH,
+      WIDTH / 2
+    );
+    var Track = Ye.circle(
+      templateObject_3$2 ||
+        (templateObject_3$2 = __makeTemplateObject(
+          [
+            "\n    fill: none;\n    stroke-dasharray: ",
+            ";\n    stroke-dashoffset: 0;\n    stroke-width: ",
+            "px;\n    stroke: ",
+            ";\n  ",
+          ],
+          [
+            "\n    fill: none;\n    stroke-dasharray: ",
+            ";\n    stroke-dashoffset: 0;\n    stroke-width: ",
+            "px;\n    stroke: ",
+            ";\n  ",
+          ]
+        )),
+      CIRCUMFERENCE,
+      STROKE_WIDTH,
+      COLORS$1.WTR_TRACK_GRAY
+    );
+    var Label = Ye.div(
+      templateObject_4 ||
+        (templateObject_4 = __makeTemplateObject(
+          [
+            "\n    font-size: 57px;\n    height: ",
+            "px;\n    left: 50%;\n    line-height: ",
+            "px;\n    margin-left: -",
+            "px;\n    position: absolute;\n    position: absolute;\n    top: 25px;\n    width: ",
+            "px;\n    z-index: 3;\n  ",
+          ],
+          [
+            "\n    font-size: 57px;\n    height: ",
+            "px;\n    left: 50%;\n    line-height: ",
+            "px;\n    margin-left: -",
+            "px;\n    position: absolute;\n    position: absolute;\n    top: 25px;\n    width: ",
+            "px;\n    z-index: 3;\n  ",
+          ]
+        )),
+      WIDTH,
+      WIDTH,
+      WIDTH / 2,
+      WIDTH
+    );
+    var Sign = Ye.sup(
+      templateObject_5 ||
+        (templateObject_5 = __makeTemplateObject(
+          ["\n    font-size: 24px;\n    color: #999;\n  "],
+          ["\n    font-size: 24px;\n    color: #999;\n  "]
+        ))
+    );
+    return React__default["default"].createElement(
+      React__default["default"].Fragment,
+      null,
+      uploadInProgress &&
+        React__default["default"].createElement(
+          React__default["default"].Fragment,
+          null,
+          React__default["default"].createElement(File, null),
+          React__default["default"].createElement(
+            Dial,
+            {
+              viewBox: "0 0 " + WIDTH + " " + WIDTH,
+            },
+            React__default["default"].createElement(Track, {
+              cx: CENTER,
+              cy: CENTER,
+              r: RADIUS,
+            })
+          ),
+          React__default["default"].createElement(
+            Label,
+            null,
+            Math.round((uploadedSize / totalSize) * 100),
+            React__default["default"].createElement(Sign, null, "%")
+          ),
+          React__default["default"].createElement(Info, {
+            fileCount: fileCount,
+            recipientsCount: recipientsCount,
+            timeRemaining: timeRemaining,
+            totalSize: totalSize,
+            uploadedSize: uploadedSize,
+          })
+        ),
+      React__default["default"].createElement(
+        ButtonWrapper,
+        null,
+        React__default["default"].createElement(
+          Button,
+          {
+            onClick: buttonOnClick,
+            primary: !uploadInProgress,
+          },
+          uploadInProgress ? "Cancel" : "Transfer"
+        )
+      )
+    );
+  }
+  var templateObject_1$4, templateObject_2$4, templateObject_3$2, templateObject_4, templateObject_5;
+
+  /**
+   * It orchestrates various UI features
+   *
+   * @returns ReactElement
+   */
+
+  function FileUploaderContainer() {
     var _a = useSelector(function (state) {
         return {
           fileCount: state.fileCount,
@@ -6137,41 +6276,98 @@
       uploadInProgress = _a.uploadInProgress;
 
     var dispatch = useDispatch();
+    React.useEffect(
+      function dirtyOldSchoolRendering() {
+        var progressCircleEl = document.getElementById("progress-circle");
+        if (!progressCircleEl) return;
+
+        if (uploadInProgress && uploadedSize && totalSize) {
+          progressCircleEl.style.opacity = "1";
+          progressCircleEl.style.strokeDashoffset = (
+            CIRCUMFERENCE -
+            (CIRCUMFERENCE * uploadedSize) / totalSize
+          ).toString();
+        } else {
+          progressCircleEl.style.opacity = "0";
+        }
+      },
+      [totalSize, uploadedSize, uploadInProgress]
+    );
     var buttonOnClick = React.useCallback(
       function () {
         dispatch(uploadInProgress ? cancelUpload() : startUpload());
       },
       [uploadInProgress]
     );
-    var Dial$1 = Ye(Dial)(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  "], ["\n  "])));
-    var Button$1 = Ye(Button)(templateObject_2$3 || (templateObject_2$3 = __makeTemplateObject(["\n  "], ["\n  "])));
+    return React__default["default"].createElement(FileUploader$1, {
+      buttonOnClick: buttonOnClick,
+      fileCount: fileCount,
+      recipientsCount: recipientsCount,
+      timeRemaining: timeRemaining,
+      totalSize: totalSize,
+      uploadedSize: uploadedSize,
+      uploadInProgress: uploadInProgress,
+    });
+  }
+
+  /**
+   * A progress circle to be used outside Provider so it doesn't re-render
+   *
+   * @returns ReactElement
+   */
+
+  function ProgressCircle() {
+    var Svg = Ye.svg(
+      templateObject_1$3 ||
+        (templateObject_1$3 = __makeTemplateObject(
+          [
+            "\n    position: absolute;\n    height: ",
+            "px;\n    width: ",
+            "px;\n    top: 30px;\n    margin-left: -",
+            "px;\n    z-index: 2;\n  ",
+          ],
+          [
+            "\n    position: absolute;\n    height: ",
+            "px;\n    width: ",
+            "px;\n    top: 30px;\n    margin-left: -",
+            "px;\n    z-index: 2;\n  ",
+          ]
+        )),
+      WIDTH,
+      WIDTH,
+      WIDTH / 2
+    );
+    var ProgressCircle = Ye.circle(
+      templateObject_2$3 ||
+        (templateObject_2$3 = __makeTemplateObject(
+          [
+            "\n    animation-duration: 2000ms;\n    animation-iteration-count: infinite;\n    animation-name: spin;\n    animation-timing-function: linear;\n    fill: none;\n    opacity: 0;\n    stroke-dasharray: ",
+            ";\n    stroke-dashoffset: 0;\n    stroke-linecap: round;\n    stroke-width: ",
+            "px;\n    stroke: ",
+            ";\n    transform-origin: center;\n    transition: stroke-dasharray 250ms;\n\n    @keyframes spin {\n      from {\n        transform:rotate(0deg);\n      }\n      to {\n        transform:rotate(360deg);\n      }\n    }\n  ",
+          ],
+          [
+            "\n    animation-duration: 2000ms;\n    animation-iteration-count: infinite;\n    animation-name: spin;\n    animation-timing-function: linear;\n    fill: none;\n    opacity: 0;\n    stroke-dasharray: ",
+            ";\n    stroke-dashoffset: 0;\n    stroke-linecap: round;\n    stroke-width: ",
+            "px;\n    stroke: ",
+            ";\n    transform-origin: center;\n    transition: stroke-dasharray 250ms;\n\n    @keyframes spin {\n      from {\n        transform:rotate(0deg);\n      }\n      to {\n        transform:rotate(360deg);\n      }\n    }\n  ",
+          ]
+        )),
+      CIRCUMFERENCE,
+      STROKE_WIDTH,
+      COLORS$1.WTR_BLUE
+    );
     return React__default["default"].createElement(
-      FileUploader$2,
-      null,
-      React__default["default"].createElement(File, null),
-      uploadInProgress &&
-        React__default["default"].createElement(
-          React__default["default"].Fragment,
-          null,
-          React__default["default"].createElement(Dial$1, {
-            magnitude: uploadedSize / totalSize,
-          }),
-          React__default["default"].createElement(Info, {
-            fileCount: fileCount,
-            recipientsCount: recipientsCount,
-            timeRemaining: timeRemaining,
-            totalSize: totalSize,
-            uploadedSize: uploadedSize,
-          })
-        ),
-      React__default["default"].createElement(
-        Button$1,
-        {
-          onClick: buttonOnClick,
-          primary: !uploadInProgress,
-        },
-        uploadInProgress ? "Cancel" : "Transfer"
-      )
+      Svg,
+      {
+        viewBox: "0 0 " + WIDTH + " " + WIDTH,
+      },
+      React__default["default"].createElement(ProgressCircle, {
+        cx: CENTER,
+        cy: CENTER,
+        id: "progress-circle",
+        r: RADIUS,
+      })
     );
   }
   var templateObject_1$3, templateObject_2$3;
@@ -6182,11 +6378,20 @@
   sagaMiddleware.run(fileUploader);
   var FileUploader = function () {
     return React.createElement(
-      Provider,
-      {
-        store: store,
-      },
-      React.createElement(React.StrictMode, {}, React.createElement(FileUploader$1))
+      React.StrictMode,
+      {},
+      React.createElement(
+        FileUploader$2,
+        {},
+        React.createElement(
+          Provider,
+          {
+            store: store,
+          },
+          React.createElement(FileUploaderContainer)
+        ),
+        React.createElement(ProgressCircle)
+      )
     );
   };
 
@@ -6200,8 +6405,8 @@
     var Svg = Ye.svg(
       templateObject_1$2 ||
         (templateObject_1$2 = __makeTemplateObject(
-          ["\n    width: '52px';\n    height: '29px';\n  "],
-          ["\n    width: '52px';\n    height: '29px';\n  "]
+          ["\n    width: 52px;\n    height: 29px;\n  "],
+          ["\n    width: 52px;\n    height: 29px;\n  "]
         ))
     );
     var Path = Ye.path(
@@ -6235,10 +6440,10 @@
       templateObject_1$1 ||
         (templateObject_1$1 = __makeTemplateObject(
           [
-            "\n    background: #fff;\n    background-clip: padding-box;\n    border: 1px solid rgba(23,24,26,.11);\n    border-radius: 5px;\n    overflow: hidden;\n    position: absolute;\n    right: 10px;\n    top: 10px;\n    transition: border-color .5s ease,opacity .4s ease;\n    user-select: none;\n    z-index: 40;\n  ",
+            "\n    background-clip: padding-box;\n    background: #fff;\n    border-radius: 5px;\n    border: 1px solid rgba(23,24,26,.11);\n    overflow: hidden;\n    padding: 0;\n    margin: 0;\n    position: absolute;\n    right: 10px;\n    top: 10px;\n    user-select: none;\n  ",
           ],
           [
-            "\n    background: #fff;\n    background-clip: padding-box;\n    border: 1px solid rgba(23,24,26,.11);\n    border-radius: 5px;\n    overflow: hidden;\n    position: absolute;\n    right: 10px;\n    top: 10px;\n    transition: border-color .5s ease,opacity .4s ease;\n    user-select: none;\n    z-index: 40;\n  ",
+            "\n    background-clip: padding-box;\n    background: #fff;\n    border-radius: 5px;\n    border: 1px solid rgba(23,24,26,.11);\n    overflow: hidden;\n    padding: 0;\n    margin: 0;\n    position: absolute;\n    right: 10px;\n    top: 10px;\n    user-select: none;\n  ",
           ]
         ))
     );
@@ -6246,18 +6451,18 @@
       templateObject_2$1 ||
         (templateObject_2$1 = __makeTemplateObject(
           [
-            "\n    align-items: center;\n    display: flex;\n    border-right: 1px solid #d4d7d9;\n    flex-grow: 1;\n    justify-content: center;\n    transition: background-color .2s ease-out;\n  ",
+            "\n    align-items: center;\n    border-right: 1px solid #d4d7d9;\n    display: inline-block;\n    padding: 5px 10px;\n  ",
           ],
           [
-            "\n    align-items: center;\n    display: flex;\n    border-right: 1px solid #d4d7d9;\n    flex-grow: 1;\n    justify-content: center;\n    transition: background-color .2s ease-out;\n  ",
+            "\n    align-items: center;\n    border-right: 1px solid #d4d7d9;\n    display: inline-block;\n    padding: 5px 10px;\n  ",
           ]
         ))
     );
     var NavLink = Ye.a(
       templateObject_3$1 ||
         (templateObject_3$1 = __makeTemplateObject(
-          ["\n    display: flex;\n    align-items: center;\n    text-decoration: none;\n    color: inherit;\n  "],
-          ["\n    display: flex;\n    align-items: center;\n    text-decoration: none;\n    color: inherit;\n  "]
+          ["\n    color: inherit;\n    text-decoration: none;\n  "],
+          ["\n    color: inherit;\n    text-decoration: none;\n  "]
         ))
     );
     return React__default["default"].createElement(
