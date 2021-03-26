@@ -4,7 +4,7 @@
   "description": "A clone of the WeTransfer uploader UI",
   "funding": {
     "type": "individual",
-    "url": "http://hem.rocks/demo.html"
+    "url": "http://jasonaarongrier.com/"
   },
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/jasongrier/wetransfer-uploader-ui-clone/issues"
   },
-  "homepage": "http://hem.rocks/demo.html",
+  "homepage": "http://jasonaarongrier.com/",
   "author": {
     "name": "Jason Grier",
     "url": "https://github.com/jasongrier",
@@ -101,8 +101,7 @@
     "format": "prettier --write \"src/**/*.[tj]s?(x)\" \"tests/**/*.[tj]s?(x)\" \"*.[tj]s?(x)\"",
     "test": "jest",
     "preversion": "npm run format && npm run build",
-    "prepublishOnly": "npm run format && npm run test && npm run build",
-    "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage"
+    "prepublishOnly": "npm run format && npm run test && npm run build"
   },
   "prettier": {
     "printWidth": 120,

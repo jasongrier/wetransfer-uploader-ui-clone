@@ -17,6 +17,3 @@ cache:
 
 script:
   - npm run test
-
-after_success:
-  - npm run push-codacy-coverage
