@@ -6,9 +6,9 @@
 
 This project is a bit over-engineered by design: It is meant to show off how I'd structure a respectable NPM package.
 
-For a small project like this, probably the best solution is to Vanilla JS.
+For a small project like this, probably the best solution is to use Vanilla JS.
 
-For a larger project —say, one that has _lots_ of these kinds of components— it seems worth it to import a library like React Transition Group, this would make the component tree a bit more straightforward, remove the reliance on refs, etc.
+For a larger project —say, one that has _lots_ of these kinds of components— it seems worth it to import a library like React Transition Group. This would make the component tree a bit more straightforward, remove the reliance on refs, etc.
 
 There are further comments in the docblocks.
 
@@ -18,7 +18,7 @@ React and ReactDOM must be available at runtime as they are not bundled.
 
 ## Getting started
 
-    npm i && npm watch
+    npm i && npm run watch
 
 Then fire up local http server of your choice and aim it at `etc/demo`.
 
