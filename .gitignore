@@ -1,0 +1,7 @@
+.idea
+.rpt2_cache
+package-lock.json
+node_modules
+coverage
+dist
+yarn.lock
