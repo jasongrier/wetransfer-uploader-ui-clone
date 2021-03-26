@@ -1,21 +1,39 @@
-import React, { ReactElement, useEffect, MutableRefObject } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
+import React, { ReactElement, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 
-import { IState, CIRCUMFERENCE, WIDTH } from "../types";
+import { IState, CIRCUMFERENCE, WIDTH, IProgressCircleRefs } from '../types'
 
-import Summary from "./Summary";
+import Summary from './Summary'
 
 interface IProps {
-  barRef: MutableRefObject<SVGCircleElement | null> | undefined;
+  progressCircleRefs: IProgressCircleRefs | undefined
 }
+
+const Label = styled.div`
+  font-size: 57px;
+  height: ${WIDTH}px;
+  left: 50%;
+  line-height: ${WIDTH}px;
+  margin-left: -${WIDTH / 2}px;
+  position: absolute;
+  position: absolute;
+  top: 25px;
+  width: ${WIDTH}px;
+  z-index: 3;
+`
+
+const Sign = styled.sup`
+  font-size: 24px;
+  color: #999;
+`
 
 /**
  * Displays file upload info
  *
  * @returns ReactElement
  */
-export default function FileUploaderContainer({ barRef }: IProps): ReactElement {
+export default function Info({ progressCircleRefs }: IProps): ReactElement {
   const { fileCount, recipientsCount, timeRemaining, totalSize, uploadedSize, uploadInProgress } = useSelector(
     (state: IState) => ({
       fileCount: state.fileCount,
@@ -25,47 +43,33 @@ export default function FileUploaderContainer({ barRef }: IProps): ReactElement 
       uploadedSize: state.uploadedSize,
       uploadInProgress: state.uploadInProgress,
     })
-  );
+  )
 
   useEffect(
     function renderProgressDirty() {
-      const progressCircleEl = barRef?.current;
+      const progressSvgEl = progressCircleRefs?.frameRef.current
+      const progressCircleEl = progressCircleRefs?.barRef.current
 
-      if (!progressCircleEl) return;
+      if (!progressSvgEl) return
+      if (!progressCircleEl) return
 
       if (uploadInProgress && uploadedSize && totalSize) {
-        progressCircleEl.style.opacity = "1";
+        progressSvgEl.style.opacity = '1'
         progressCircleEl.style.strokeDashoffset = (
           CIRCUMFERENCE -
           (CIRCUMFERENCE * uploadedSize) / totalSize
-        ).toString();
+        ).toString()
       } else {
-        progressCircleEl.style.opacity = "0";
+        progressSvgEl.style.opacity = '0'
       }
     },
     [totalSize, uploadedSize, uploadInProgress]
-  );
+  )
 
-  const Label = styled.div`
-    font-size: 57px;
-    height: ${WIDTH}px;
-    left: 50%;
-    line-height: ${WIDTH}px;
-    margin-left: -${WIDTH / 2}px;
-    position: absolute;
-    position: absolute;
-    top: 25px;
-    width: ${WIDTH}px;
-    z-index: 3;
-  `;
-
-  const Sign = styled.sup`
-    font-size: 24px;
-    color: #999;
-  `;
+  if (!uploadInProgress) return <div />
 
   return (
-    <div>
+    <>
       <Label>
         {Math.round((uploadedSize / totalSize) * 100)}
         <Sign>%</Sign>
@@ -77,6 +81,6 @@ export default function FileUploaderContainer({ barRef }: IProps): ReactElement 
         totalSize={totalSize}
         uploadedSize={uploadedSize}
       />
-    </div>
-  );
+    </>
+  )
 }

@@ -1,26 +1,27 @@
-import React, { StrictMode, ReactElement, useState, MutableRefObject } from "react"
-import { Provider } from "react-redux"
+import React, { StrictMode, ReactElement, useState } from 'react'
+import { Provider } from 'react-redux'
 
-import { store } from "../store"
+import { store } from '../store'
+import { IProgressCircleRefs } from '../types'
 
-import Box from "./Box"
-import Info from "./Info"
-import File from "./File"
-import Footer from "./Footer"
-import ProgressCircle from "./ProgressCircle"
+import Box from './Box'
+import Info from './Info'
+import File from './File'
+import Footer from './Footer'
+import ProgressCircle from './ProgressCircle'
 
 export default (): ReactElement => {
-  const [barRef, setBarRef] = useState<MutableRefObject<SVGCircleElement | null>>()
+  const [progressCircleRefs, setProgressCircleRefs] = useState<IProgressCircleRefs>()
 
   return (
     <StrictMode>
       <Box>
         <Provider store={store}>
           <File />
-          <Info barRef={barRef} />
+          <Info progressCircleRefs={progressCircleRefs} />
           <Footer />
         </Provider>
-        <ProgressCircle getRef={(barRef) => setBarRef(barRef)} />
+        <ProgressCircle getRef={(refs) => setProgressCircleRefs(refs)} />
       </Box>
     </StrictMode>
   )
