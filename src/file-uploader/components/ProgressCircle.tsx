@@ -6,7 +6,7 @@ import { COLORS } from '../../../lib/styles'
 import { CENTER, CIRCUMFERENCE, RADIUS, WIDTH, STROKE_WIDTH, IProgressCircleRefs } from '../types'
 
 interface IProps {
-  getRef: (progressCircleRefs: IProgressCircleRefs) => any
+  getRefs: (progressCircleRefs: IProgressCircleRefs) => any
 }
 
 const Svg = styled.svg`
@@ -58,11 +58,11 @@ const Bar = styled.circle`
  *
  * @returns ReactElement
  */
-export default function ProgressCircle({ getRef }: IProps): ReactElement {
+export default function ProgressCircle({ getRefs }: IProps): ReactElement {
   const barRef = useRef<SVGCircleElement | null>(null)
   const frameRef = useRef<SVGSVGElement | null>(null)
 
-  useEffect(() => getRef({ barRef, frameRef }), [])
+  useEffect(() => getRefs({ barRef, frameRef }), [])
 
   return (
     <Svg ref={frameRef} viewBox={`0 0 ${WIDTH} ${WIDTH}`}>

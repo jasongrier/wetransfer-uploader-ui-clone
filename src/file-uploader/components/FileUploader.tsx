@@ -10,7 +10,7 @@ import File from './File'
 import Footer from './Footer'
 import ProgressCircle from './ProgressCircle'
 
-export default (): ReactElement => {
+export default function FileUploader(): ReactElement {
   const [progressCircleRefs, setProgressCircleRefs] = useState<IProgressCircleRefs>()
 
   return (
@@ -21,7 +21,7 @@ export default (): ReactElement => {
           <Info progressCircleRefs={progressCircleRefs} />
           <Footer />
         </Provider>
-        <ProgressCircle getRef={(refs) => setProgressCircleRefs(refs)} />
+        <ProgressCircle getRefs={(refs) => setProgressCircleRefs(refs)} />
       </Box>
     </StrictMode>
   )

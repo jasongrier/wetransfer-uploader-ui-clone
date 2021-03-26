@@ -6356,11 +6356,11 @@
    */
 
   function ProgressCircle(_a) {
-    var getRef = _a.getRef
+    var getRefs = _a.getRefs
     var barRef = React.useRef(null)
     var frameRef = React.useRef(null)
     React.useEffect(function () {
-      return getRef({
+      return getRefs({
         barRef: barRef,
         frameRef: frameRef,
       })
@@ -6386,7 +6386,7 @@
   }
   var templateObject_1$3, templateObject_2$3, templateObject_3$2
 
-  var FileUploader = function () {
+  function FileUploader() {
     var _a = React.useState(),
       progressCircleRefs = _a[0],
       setProgressCircleRefs = _a[1]
@@ -6409,7 +6409,7 @@
           React__default['default'].createElement(Footer, null)
         ),
         React__default['default'].createElement(ProgressCircle, {
-          getRef: function getRef(refs) {
+          getRefs: function getRefs(refs) {
             return setProgressCircleRefs(refs)
           },
         })

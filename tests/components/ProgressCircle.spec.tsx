@@ -7,6 +7,6 @@ configure({ adapter: new Adapter() })
 
 describe('ProgressCircle', () => {
   it('renders correctly', () => {
-    shallow(<ProgressCircle getRef={() => {}} />)
+    shallow(<ProgressCircle getRefs={() => {}} />)
   })
 })
