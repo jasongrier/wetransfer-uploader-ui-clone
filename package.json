@@ -101,6 +101,7 @@
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage"
   },
   "prettier": {
-    "printWidth": 120
+    "printWidth": 120,
+    "semi": false
   }
 }
